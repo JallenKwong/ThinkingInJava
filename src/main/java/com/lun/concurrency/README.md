@@ -61,3 +61,19 @@ A simple way to affect the behavior of your task is by calling sleep() to cease�
 If you konw that you've accomplished what you need to during one pass through a loop in your run() method, you can give a **hint** to the thread scheduling mechanism that you've done enough and that some other task might as well have the CPU.
 
 The hint(and it's a hint -- there's **no guarantee** your implementation will listen to it) tasks the form of the yield() method. When you call yield(), you are suggesting that other threads of same priority.
+
+## Daemon thread ##
+
+A "daemon" thread is intended to provide a general service in background as long as the program is running, but it's not part of the essence of program.
+
+**SimpleDaemons** 将线程设置为守护线程，主线程运行完成，守护线程也会随之终止
+
+**DaemonThreadFactory** 实现ThreadFactory接口的守护线程工厂
+
+**DaemonFromFactory** Executor 通过**DaemonThreadFactory** 工厂借口创建守护线程
+
+**DaemonThreadPoolExecutor** 更高一级的 守护线程创造的方法 通过继承ThreadPoolExecutor()
+
+**Daemons** 守护线程里执行任务中所创建的线程也是守护线程（龙生龙，凤生凤）
+
+**DaemonsDontRunFinally** Daemon 与 finally擦不出火花
