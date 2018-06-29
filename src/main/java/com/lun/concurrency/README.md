@@ -12,6 +12,9 @@
 
 ---
 
+# Basic threading #
+
+
 	Thread.yield();
 
 This is static method is suggestion to the **thread scheduler**(the part of the Java threading mechanism that moves the CPU from one thread to the next)that says, "I've done the important parts of my cycle and this would be a good time to switch to another task for a while." It's completely optional.
@@ -127,6 +130,33 @@ If a thread call **t.join()** on another thread **t**, then calling thread is su
 **Attention**:
 
 When another thread calls **interrupt()** on this thread, a flag is set to indicate that the thread calls **interrupt()** on this thread, a flag is cleared when the exception is caught, so result will always be **false** inside the **catch** clase.
+
+## Create responsive user interface ##
+
+**ResponsiveUI** 一个创建守护线程的用户界面例子
+
+## Thread Groups ##
+
+The value of thread groups can be summed up by quote from Joshua Bloch:
+
+> Thread groups are best viewed as an unsuccessful experiment, and you may simply ignore their existence.
+
+## Catching exceptions ##
+
+Because of the nature of thread, you **can't** catch an exception that has escaped from a thread. 
+
+Once an exception gets outside of a task's **run()** method, it will propagate out to the console unless you take **special steps** to capture such errant exceptions.
+
+**ExceptionThread** 一个简单线程抛异常的例子
+
+**NaiveExceptionHandling** try-catch并不能捕获从线程抛出的异常
+
+**CaptureUncaughtException** 通过实现Thread.UncaughtExceptionHandler接口方法来捕获线程抛出来的异常
+
+**SettingDefaultHandler** 全局设置UncaughtExceptionHandler
+
+
+
 
 
 
