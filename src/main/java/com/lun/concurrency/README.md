@@ -155,26 +155,88 @@ Once an exception gets outside of a task's **run()** method, it will propagate o
 
 **SettingDefaultHandler** 全局设置UncaughtExceptionHandler
 
+# Sharing resources #
+
+太公分猪肉，人人有份
+
+## Improperly accessing resources 不当访问资源 ##
+
+线程不安全的事例
+
+**IntGenerator**
+
+**EvenChecker**
+
+**EvenGenerator**
+
+得不出奇数的结果
+
+术语
+
+**atomic原子性**，which means that simple operations like assignment and value return happen without the possibility.
+
+**volatile易变的** 修饰成员变量，确保可见性，不使用缓存机制
+
+**race condition竞争条件** where two or more tasks race to respond回应 to a condition and thus collide冲突 or otherwise produce inconsistent不一致 results.
+
+**Java的 自增并不是原子操作**
+
+It's important to note that the increment operation itself requires multiple steps, and the task can be suspended 悬挂 by the threading mechanism in the midst of an increment-that is, **increment is not an atomic operation in Java**. So even a single increment isn't safe to do without protecting the task.
+
+## Resolving shared resource contention竞争 ##
+
+To solve the problem of thread collision, virtually 实际上 all concurrency schemes 计划 **serialize** 连载，序列化 access to shared resources.
+
+This means that only one task at a time is allowed to access the shared resources.
+
+处理法
+This is ordinary accomplished by putting a clause around a piece of code that only allows one task at a time to pass through that piece of code.
+
+Because this clause produces **mutual exclusion相互排斥**, a common name for such a mechanism is **mutex互斥**
+
+**synchronized**
+
+To prevent collisions over resources, Java has built-in support in the form of the **synchronized** keyword.
+
+When a task wishes to execute a piece of code guarded by the **sychronized** keyword, it checks to see if the lock is available, then acquires it, executes the code, and releases it.
+
+大概用法思路 **一个萝卜一个坑**
+
+To control access to a shared resource, you first put it inside an object. Then any method that uses the resource can be made **synchronized**.
+
+If a task is in a call to one of the **synchronized** methods, all other tasks are blocks from entering any of the synchronized methods of that object until the first task return from its call.
+
+更详细例子
+
+1. In production code, you're already seen that you should make the data elements of a class **private** and access that memory only through methods.
+
+2. You can prevent collision by declaring those methods **synchronized**, :
+
+---
+
+	synchronized void f(){...}
+	synchronized void g(){...}
+
+All objects automatically contain a single **lock** (also referred to as a **monitor**).
+
+When you call any **synchronized** method, that object is locked and no other **synchronized** method of that object can be called until the first one finishes and releases the lock.
+
+For the preceding methods, if **f()** is called for an object by one task , a different task cannot call **f()** or **g()** for the same object until **f()** is completed and release the lock. 
+
+Thus, there is a single lock that is shared by all the **synchronized** methods of a particular object, and this lock can be used to prevent object memory from being written by more than one task at a time.
+
+关于静态synchronized方法
+
+There's also a single lock per class(as part of the Class Object for the class), so that **synchronized static** methods can lock each other out from simultaneous同时发生的 access of **static** data on a class-wide basis.
+
+**什么时候用synchronized?**
+
+*Java concurrency in practice* 的作者作出的解释
+
+> If you are **writing** a variable that might next be **read** by another thread, or **reading** a variable that might have last been **written** by another thread, you must use synchronization, and further, **both the reader and the writer must synchronize using the same monitor lock.**
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+All in all, **Every method that accesses a critical shared resource must be synchronized or it's won't right.**
 
 
 
