@@ -236,11 +236,21 @@ There's also a single lock per class(as part of the Class Object for the class),
 > If you are **writing** a variable that might next be **read** by another thread, or **reading** a variable that might have last been **written** by another thread, you must use synchronization, and further, **both the reader and the writer must synchronize using the same monitor lock.**
 
 
-All in all, **Every method that accesses a critical shared resource must be synchronized or it's won't right.**
+All in all, **Every method that accesses a critical shared resource must be synchronized or it's won't right线程不安全.**
 
 
+**SynchronizedEvenGenerator** synchronized 上面的EvenGenerator，使线程安全
+
+**MutexEvenGenerator** 通过使用明确的互斥机制Java SE5的java.util.concurrent的**ReentrantLock**/rɪ'entrənt/重入锁实现线程安全
 
 
+synchronized 与 Lock 对象的比较
+
+1. 使用Lock对象在try-catch有机会finally
+2. synchronized更简洁
+3. Lock对象提供更细粒度的操作
+
+**AttemptLocking** ReentrantLock的运用示例，tryLock()尝试加锁的方法运用（限时等待锁，超时了就不等）
 
 
 
