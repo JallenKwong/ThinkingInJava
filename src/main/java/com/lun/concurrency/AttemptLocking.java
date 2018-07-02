@@ -49,7 +49,7 @@ public class AttemptLocking {
 				System.out.println("acquired");
 			}
 		}.start();
-		Thread.yield(); // Give the 2nd task a chance
+		Thread.yield();// Give the 2nd task a chance
 		al.untimed(); // False -- lock grabbed by task
 		al.timed(); // False -- lock grabbed by task
 	}

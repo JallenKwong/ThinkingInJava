@@ -290,8 +290,100 @@ Trying to remove synchronization with atomicity is usually a sign of premature o
 4. **volatile** doesn't work when the value of a field depends on its previous value(such as incrementing a counter), nor does it work on fields whose values are constrained by the values of other fields, such as the **lower** and **upper** bound if a **Range** class which must obey the constraint **lower <= upper**.这条想不明白，不是自己通过业务逻辑限制吗？
 
 ---
-建议
+**建议**
 
 It's typical only safe to use **volatile** instead of **synchronized** if the class has only one mutable field.
 
-Again, you first choice should be to use the **synchronized** keyword-that's the safest approach, and trying to do anything else is risky
+>Again, you first choice should be to use the **synchronized** keyword-that's the safest approach, and trying to do anything else is risky
+
+---
+
+	i++;
+	i+=3;
+
+上述操作在Java中没有原子性atomic（C++的话就可能有，要根据不同的平台）
+
+---
+
+### 书籍上的示例 ###
+
+**AtomicityTest** 原子性操作并不保证线程安全的示例
+
+**SerialNumberGenerator**，
+**SerialNumberChecker** 原子性操作并不保证线程安全的示例又一例
+
+---
+
+重申：
+
+**Java increment is not atomic** and involves both a read and a write, so there's room for threading problems even in such a simple operation.
+
+---
+
+volatile的功能增记
+
+**volatile** is possible for each thread to have a local stack and maintain copies of some variables there.
+
+If you define a variable as **volatile** , it tells the compiler **not to do any optimizations** that would reads and writes that keep the field in exact synchronization with the local data in the threads.**In effect, reads and writes go directly to memory, and are not cached.**没缓存
+
+**volatile** also restrict compiler **reordering** of accesses 重排 during optimization
+
+However, **volatile** doesn't affect the fact that an increment isn't an **atomic** operation.
+
+一个volatile用法 
+
+Basically, you should make a field **volatile** if that field could be simultaneously accessed by multiple task, and at least one of those accesses is a write.
+
+一个volatile的应用示例——**多线程终止flag**
+
+For example, a field that is used as a flag to stop a task must be declared **volatile**; otherwise, that flag could be cached in a regiter, and when you make changes to the flag from outside the task, the cached value wouldn't be changed and the task wouldn't know it should stop.
+
+---
+
+### 小结 ###
+
+1. 原子操作不可中断
+2. Java中自增，自减等类操作不是原子操作
+3. 不要用atomicity代替synchronized,除非你是专家或者你从专家得到帮助。
+
+### 关键字volatile小结 ###
+
+1. 针对long, double 的word tearing情况；
+2. visiblity(no cached)(多个任务，同一变量(任务都需要的这变量情况下)(volatile修饰的情况下))(用例**多线程终止flag**)；
+3. 告诉编译器，被**volatile**修饰的成员变量不作优化，如指令重排（涉及 流水线方面）；
+4. **volatile**不影响“Java中自增，自减等类操作不是原子操作” 的事实。
+
+## Atomic classes ##
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
