@@ -252,10 +252,46 @@ synchronized 与 Lock 对象的比较
 
 **AttemptLocking** ReentrantLock的运用示例，tryLock()尝试加锁的方法运用（限时等待锁，超时了就不等）
 
+## Atomicity and Volatility ##
 
+**错误的认识**
 
+**Atomic operations do not need to synchronized.**
 
+An atomic operation is one that cannot be interrupted by thread scheduler; 
 
+if the operation begins, then it will run to completion结束 before the possibility of a context switch.
 
+Relying on atomicity is tricky and dangerous-**you should try to use atomicity instead of synchronization if you are a concurrency expert, or you have help from such an expert**
 
+Trying to remove synchronization with atomicity is usually a sign of premature optimization, and will cause you a lot of trouble, probably without gaining much, anything.
 
+---
+
+**valitile**/ˈvɑ:lətl/关键字 作用
+
+1. 防止**word tearing**(JVM 允许long double 64位类型 分开32位进行操作）you do get atomicity(for simple assignments and returns)if you use the **volatile** keyword when defining  a **long** or **double** variable (not the volatile was not working properly before Java SE5)
+
+2. Visibility**(**出现场景Changes made by one task, even if they're atomic in the sense of not being interruptible, might **not be visible** to other tasks(the changes might be temporarily stored in a local processor cache, for example),so different tasks will have a different view of the application's state**)** The **volatile** keyword ensure **visibility** across the application.If you declare a field to be **volatile**, this means that as soon as a write occurs for that field, all reads will see the change.
+
+---
+
+**Atomicity and volatility are distinct concept.**
+
+没必要 用**volatile**情况
+
+1. An atomic operation on a non-volatile field will not necessarily be flushed to main memory, and so another task that reads that field will not necessarily see the new value.
+
+2. If multiple tasks are accessing a field, that field should be **volatile**; otherwise, the field should only be accessed via **synchronization**.
+**Synchronization** ALSO causes flushing to main memory, so if a field is completely guarded by **synchronized** methods or blocks, it is not necessary to make it **volatile**
+
+3. Any writes that a task makes will be visible to that task, so you **don't** need to make field **volatile** if it is only seen within a task.
+
+4. **volatile** doesn't work when the value of a field depends on its previous value(such as incrementing a counter), nor does it work on fields whose values are constrained by the values of other fields, such as the **lower** and **upper** bound if a **Range** class which must obey the constraint **lower <= upper**.这条想不明白，不是自己通过业务逻辑限制吗？
+
+---
+建议
+
+It's typical only safe to use **volatile** instead of **synchronized** if the class has only one mutable field.
+
+Again, you first choice should be to use the **synchronized** keyword-that's the safest approach, and trying to do anything else is risky
