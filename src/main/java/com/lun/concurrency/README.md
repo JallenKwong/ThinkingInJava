@@ -355,18 +355,48 @@ For example, a field that is used as a flag to stop a task must be declared **vo
 
 ## Atomic classes ##
 
+有**AtomicInteger**, **AtomicLong**, **AtomicReference**
 
+这些类的操作（如自增）能保证是原子操作，
 
+**AtomicIntegerTest**
 
+**AtomicEvenGenerator**
 
+The atomic operation that are supposed to be safe are the reading and assignment of primitives. However, it's still easily **possible** to use an atomic operation that accesses your object while it's in an stable intermediate state.
 
+## Critical section ##
 
+Sometimes, you only want to prevent multiple thread access to part of the code inside a method instead of the entire method.
 
+The section of code you want to isolate this way is called a **Critical section临界区** and is created using the **synchronized** keyword.
 
+Here, **synchronized** is used to specify the object whose lock is being used to **synchronized** the enclosed code.
 
+	synchronized(syncObject){
+		//This code can be accessed 
+		//by only one task at a time
+	}
 
+This is also called a **synchronized block同步块**；before it can be entered, the lock must be acquired on syncObject.If some other task already has this lock, then critical section cannot be entered until the lock is released.
 
+**CriticalSection** synchronized 方法和synchronized block 用例
 
+## Synchronizing on other objects ##
+
+**SyncObject** 同步不同对象
+
+## Thread local storage ##
+
+**A second way** to prevent tasks form colliding over shared resources is eliminate消除 the sharing of variables.
+
+**Thread local storage** is a mechanism that automatically create different storage for the same variable, for each different therad that use an object.
+
+Thus, if you have five thread using an object with variable **x**, thread local storage generate five diierent pieces of storage for **x**.
+
+**ThreadLocalVariableHolder** ThreadLocal的用法
+
+# Terminating tasks #
 
 
 
