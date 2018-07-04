@@ -398,9 +398,52 @@ Thus, if you have five thread using an object with variable **x**, thread local 
 
 # Terminating tasks #
 
+通过 boolean cancle来设计线程结束标志，但是，这方法有可能不能立即终结线程
+
+**OrnamentalGarden**通过 boolean cancle来设计线程结束标志的示例
+
+---
+**线程开发中的坑**
+
+In real threading problems, the possibility for failure may be statistically small, so you can easily fall into the trap of believe that things are working correctly 
+
+---
+## Thread State ##
+
+- **NEW**
+ A thread that has not yet started is in this state. 
+- **RUNNABLE**
+ A thread executing in the Java virtual machine is in this state. 
+- **BLOCKED**
+ A thread that is blocked waiting for a monitor lock is in this state. 
+- **WAITING**
+ A thread that is waiting indefinitely for another thread to perform a particular action is in this state. 
+- **TIMED_WAITING**
+ A thread that is waiting for another thread to perform an action for up to a specified waiting time is in this state. 
+- **TERMINATED**
+ A thread that has exited is in this state. 
+
+## The reason why a task become blocked ##
+
+- You're put the task to sleep by calling **sleep(milliseconds)**,in which case it will not be run for runthe specified time.
+
+- You're suspended the execution of the thread with **wait()**. It will not become runnable again until the thread gets the **notify()** or **notifyAll()** message(or the equivalent **signal()** or **signalAll()** for Java SE5 **java.util.concurrency**)
+
+-The task is waiting for some **I/O** to complete.
+
+-The task is trying to call a **synchronized** method on another object, and that object's lock is not available because it has already been acquired by another task.
 
 
+---
+被废弃的方法
 
+suspend(),resume()//(易死锁)
+
+stop()//获得锁的线程用这stop(),锁将获取不得
+
+---
+
+The problem we need to look at now is this: **Somethings you want to terminate a task that is in a blocked state.** If you can't wait for it to get to a point in the code where it can check a state value and decide to terminate on its own, you have to force the task out of its blocked state.
 
 
 
