@@ -410,28 +410,49 @@ In real threading problems, the possibility for failure may be statistically sma
 ---
 ## Thread State ##
 
-- **NEW**
- A thread that has not yet started is in this state. 
-- **RUNNABLE**
- A thread executing in the Java virtual machine is in this state. 
-- **BLOCKED**
- A thread that is blocked waiting for a monitor lock is in this state. 
-- **WAITING**
- A thread that is waiting indefinitely for another thread to perform a particular action is in this state. 
-- **TIMED_WAITING**
- A thread that is waiting for another thread to perform an action for up to a specified waiting time is in this state. 
-- **TERMINATED**
- A thread that has exited is in this state. 
 
-## The reason why a task become blocked ##
+- NEW
 
-- You're put the task to sleep by calling **sleep(milliseconds)**,in which case it will not be run for runthe specified time.
+Thread state for a thread which has not yet started.
 
-- You're suspended the execution of the thread with **wait()**. It will not become runnable again until the thread gets the **notify()** or **notifyAll()** message(or the equivalent **signal()** or **signalAll()** for Java SE5 **java.util.concurrency**)
+  
+- RUNNABLE
 
--The task is waiting for some **I/O** to complete.
+Thread state for a runnable thread. A thread in the runnable state is executing in the Java virtual machine but it may be waiting for other resources from the operating system such as processor.
 
--The task is trying to call a **synchronized** method on another object, and that object's lock is not available because it has already been acquired by another task.
+  
+- BLOCKED
+
+Thread state for a thread blocked waiting for a monitor lock. A thread in the blocked state is waiting for a monitor lock to enter a synchronized block/method or reenter a synchronized block/method after calling Object.wait.
+
+  
+- WAITING
+
+Thread state for a waiting thread. A thread is in the waiting state due to calling one of the following methods: •Object.wait with no timeout
+•Thread.join with no timeout
+•LockSupport.park
+
+A thread in the waiting state is waiting for another thread to perform a particular action. For example, a thread that has called Object.wait() on an object is waiting for another thread to call Object.notify() or Object.notifyAll() on that object. A thread that has called Thread.join() is waiting for a specified thread to terminate.
+
+---
+- TIMED_WAITING
+
+Thread state for a waiting thread with a specified waiting time. A thread is in the timed waiting state due to calling one of the following methods with a specified positive waiting time:
+
+Thread.sleep
+
+Object.wait with timeout
+
+Thread.join with timeout
+
+LockSupport.parkNanos
+
+LockSupport.parkUntil
+
+---
+- TERMINATED
+
+Thread state for a terminated thread. The thread has completed execution.
 
 
 ---
@@ -446,15 +467,25 @@ stop()//获得锁的线程用这stop(),锁将获取不得
 The problem we need to look at now is this: **Somethings you want to terminate a task that is in a blocked state.** If you can't wait for it to get to a point in the code where it can check a state value and decide to terminate on its own, you have to force the task out of its blocked state.
 
 
+## Interruption ##
 
+**Interrupting** Executors的中断方法cancel，以及对sleep，IO，Synchronized的反应
 
+Interrupting中**Sleep**Block is an example of **interruptible** blocking, whereas **IO**Blocked and **Synchronized**Blocked are **uninterruptible**
 
+- 可中断:sleep 
 
+- 不可中断:IO，Synchronized
 
+**CloseResource** A heavy-handed but sometimes effective solution to this problem is to close the underlying resource on which the task is blocked 关闭资源，间接中断线程
 
+**NIOInterruption** The **nio** classes for more civilized interruption of I/O. Blocked **nio** channels **automatically** respond interrupt.
 
+NIO有文明的方法响应中断。
 
+## Blocked by a mutex ##
 
+**MultiLock** synchronized 方法 套用 同对象的synchronized 方法，因为同对象，锁也一致，被套用的synchronized 方法不会发生阻塞
 
 
 

@@ -12,7 +12,7 @@ class Count {
 	public synchronized int increment() {
 		int temp = count;
 		if (rand.nextBoolean()) // Yield half the time
-			Thread.yield();
+			Thread.yield();//潜行异常
 		return (count = ++temp);
 	}
 
