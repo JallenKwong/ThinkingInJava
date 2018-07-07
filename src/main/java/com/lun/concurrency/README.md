@@ -487,7 +487,14 @@ NIO有文明的方法响应中断。
 
 **MultiLock** synchronized 方法 套用 同对象的synchronized 方法，因为同对象，锁也一致，被套用的synchronized 方法不会发生阻塞
 
+This makes sense because one task should be able to call other synchronized methods within the same object; that task already holds the lock.
 
+**Interrupting2** One of the features added in the Java SE5 concurrency libraries is the ability for task blocked on **ReentrantLocks** to be interrupted, unlike tasks blocked on **synchronized** methods or critical sections.
 
+## Checking for an interrupt ##
+
+**InterruptingIdiom** The  example shows the typical idiom that you should use in **run()** method to handle both blocked and non-blocked possibilities when the interrupted status is set
+
+多重try-finally 且 Thread.interrupted()的应用
 
 
