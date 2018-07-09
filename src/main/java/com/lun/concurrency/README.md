@@ -569,7 +569,7 @@ This is important because:
 
 3. It's also possible that tasks could be waiting on your object's lock for different reason (in which case you must use **notifyAll()**).In this case, you need to check whether you're been woken up for the right reason, and if not, call **wait()** again.
 
-Thus, it's essential that you check for you particular condition of interest, and go back into **wait()** if that condition is not met.This is idiomatically written using a **while**.
+Thus, it's essential that you check for you particular condition of interest, and go back into **wait()** if that condition is not met.This is idiomatically惯用地 written using a **while**.
 
 
 
