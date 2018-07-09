@@ -497,4 +497,101 @@ This makes sense because one task should be able to call other synchronized meth
 
 多重try-finally 且 Thread.interrupted()的应用
 
+# Cooperation between task #
+
+When you use threads to run more than one task at a time, you can keep one task from interfering with another task's resources by using a **lock**(**mutex**) to synchronize the behavior of the two tasks. If two tasks are stepping on each other over a shared resource(usually memory), you use **mutex** to allow only one task at a time to access that resource.
+
+
+任务顺利合作的思路
+
+The key issue when tasks are cooperating is handshaking between those tasks. To accomplish this handshaking, we use the same foundation: the **mutex**, which in this case guarantee that only one task can respond to signal.This eliminates any possible race conditions. On top of the mutex, we add a way for a task to suspend itself until **some external state** change, indicating that it's time for that task to move forward.
+
+关键
+
+**Object**的wait(),notifyAll()
+Java SE5的**Condition**的await(),signal()
+
+## wait() and notifyAll() ##
+
+wait() allows you to wait for a change **in some condition** that is outside the control of the force in the current method.
+
+Often, this condition will be changed by another task.
+
+You don't want to idly loop while testing the condition inside your task;this is called **busy waiting**, and it's usually a use of CPU cycles.
+
+任务合作基本思路
+wait() 与 notify() 或 notifyAll()成双对
+
+So **wait()** suspends the task while waiting for the world to change, and only when a **notify()** or **notifyAll()** occurs-suggesting that something of interesting of interest may have happened-does the task wake up and check for change.Thus, **wait()** provides a way to synchronized activities between tasks.
+
+---
+
+
+It's important to understand that **sleep()** does not release the object lock when it's called, and neither does **yield()**
+
+sleep(),yield()并不释放锁
+
+wait()功效
+When a task enters a call to **wait()** inside a method, that thread's execution is suspended, and the lock on that object is released.
+
+Because **wait()** release the lock,it means that the lock can be acquired by another task, so **synchronized** methods in the (unlocked) object can be called during a wait().
+
+This is essential, because those other methods are typical what cause the change that makes it interesting for the suspended task to reawaken.
+
+wait()拟人化意图
+When you call **wait()**, you're saying, **"I've done all I can right now, so I'm going to wait right here, but I want to allow other synchronized operations to take place if they can."**
+
+---
+wait()有分 无参 和 有参（ms）
+
+---
+wait(),notify(),notifyAll 必须 放置 **synchronized** 方法 或 块内
+
+否则，虽能通过编译，但是不能够运行，运行抛出异常**IllegalMonitorStateException**
+
+---
+
+**WaxOMatic** 运用wait() and notifyAll()进行任务合作的示例
+
+---
+
+在上面例子当中
+
+重点:为什么wait要用while循环包围着
+
+The previous example emphasizes that you must surround a **wait()** with a **while** loop that checks the conditions of interest.
+
+This is important because:
+
+1. You may have multiple tasks waiting on the same reason, and the first tasks that wakes up might change the situation(even if you don't do this someone might inherir from you class and do it). If that is the case, this task should be suspended again until its condition of interest changes.
+
+2. By the time this task awakens from its **wait()**, it's possible that some other task will have changed things such that this task is unable to perform or is uninteresting in performing its operation at this time. Again, it should be resuspended by calling **wait()** again.
+
+3. It's also possible that tasks could be waiting on your object's lock for different reason (in which case you must use **notifyAll()**).In this case, you need to check whether you're been woken up for the right reason, and if not, call **wait()** again.
+
+Thus, it's essential that you check for you particular condition of interest, and go back into **wait()** if that condition is not met.This is idiomatically written using a **while**.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
