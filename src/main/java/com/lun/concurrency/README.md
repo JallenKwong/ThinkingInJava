@@ -571,19 +571,110 @@ This is important because:
 
 Thus, it's essential that you check for you particular condition of interest, and go back into **wait()** if that condition is not met.This is idiomatically惯用地 written using a **while**.
 
+另一个缘由：消失的信号
+
+	T1:
+	synchronized(sharedMonitor){
+		<setup condition for T2>
+		sharedMonitor.notify();
+	}
+
+	T2:
+	while(someCondition){
+		//Point 1
+		synchronized(sharedMonitor){
+			sharedMonitor.wait();
+		} 
+	}
+
+问题出现过程：
+
+T2 someCondition is true 
+
+然后 Java调度器调到T1
+	condition设为false
+	sharedMonitor.notify()
+
+然后 调到 T2
+	sharedMonitor.wait()
+
+然后就死锁了
+
+解决之道
+
+	synchronized(sharedMonitor){
+		while(someCondition)
+			sharedMonitor.wait();
+	}
+
+## notify() & notifyAll() ##
+
+notifyAll()比notify()更安全，notify()是notifyAll()另一种优化，但要确定唤醒有且仅有一个特定的任务
+
+**NotifyVsNotifyAll** notify()和notifyAll()
 
 
+## 生产者与消费者 ##
 
+**Restaurant** 生产者和消费者的实例
 
+### 使用显式的Lock和Condition对象 ###
 
+**WaxOMatic2** 使用显式的Lock和Condition对象修改先前的示例WaxOMatic2 (又线程间的合作)
 
+synchronized - Lock
 
+Object.wait() - Condition.await()
 
+Object.notify() - Condition.signal()
 
+Object.notifyAll() - Condition.signalAll()
 
+这样映射可以让线程同步 更加符合 面向对象编程
 
+## 生产者-消费者 与 队列 ##
 
+wait() 和 notifyAll()方法以一种非常低级的方式解决了任务互相操作问题，即每次交互都需要握手。
 
+在许多情况下，你使用高级别的**同步队列**java.util.concurrency.BlockingQueue解决协作任务，这队列每时每刻都只允许一个任务插入或移除元素。
+
+阻塞队列比notifyAll()、wait()比，简单高效
+
+**TestBlockingQueues** 阻塞队列们的基本使用
+
+**ToastOMatic** 阻塞队列来弄成生产者-消费者，还有使用Enum的优秀示例
+
+## 任务间使用管道进行输入、输出 ##
+
+**PipedIO** PipedReader允许任务向管道写/PipedWriter允许不同任务从同一个管道中读取
+
+# DeadLock #
+
+什么是死锁？
+
+某种任务在等另一个任务，而后者又等待别的任务，这样一直下去，直到这个**链条**上的任务又在等待第一个释放锁。 这得到了一个任务之间相互等待的连续循环，没有哪一个线程能继续。这称之为 **死锁**。
+
+由Edsger Dijkstra提出的**哲学家就餐**问题是一个经典的死锁例证。
+
+**Chopstick**
+
+**Philosopher**
+
+**DeadlockingDiningPhilosophers** 哲学家就餐(死锁示例)
+
+**要解决死锁问题，要必须明白以下四个条件同时满足，就会发生死锁**： 
+
+1. **互斥条件**。任务中使用的资源至少有一个是不能共享。这里，一根**Chopstick**一次只能被一个**Philosopher**使用。
+
+2. 至少有一个任务它必须持有一个资源且正在等待获取一个当前被别的任务持有的资源，这里**Philosopher**必须拿着一根**Chopstick**并且等待另一根。
+
+3. 资源不能被任务抢占，任务必须把资源释放当作普通事件。**Philosopher**是绅士，不抢东西
+
+4. 必须有**循环等待**，这时，一个任务等待其他任务所持有的资源，后者又在等待另一个任务所持有的资源，这样一直下去，直到有一个任务在等待第一个任务所持有的资源，使得大家被锁住。在**DeadlockingDiningPhilosophers**中，因为每个**Philosopher**都试图先得到右边的**Chopstick**,然后得到左边的，发生循环等待。
+
+**FixedDiningPhilosophers** 解决哲学家就餐(死锁示例)卡死问题，破坏第四条，最后一位哲学家先左后右拿**Chopstick**
+
+# java.util.concurrency的新构件 #
 
 
 
