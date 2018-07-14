@@ -736,6 +736,43 @@ DelayQueue是一个无界的BlockingQueue，用于放置实现了Delayed接口�
 
 ## PriorityBlockingQueue ##
 
+它是一个很基础的优先队列，它具有可阻塞的读取的操作。
+
+**PriorityBlockingQueueDemo** 优先阻塞队列 的 生产者-消费者
+
+## 使用ScheduledExecutor的温室控制器 ##
+
+**ScheduledThreadPoolExecutor**提供了使用schedule()(运行一次任务)运行一次任务或者scheduleAtFixedRate()(每隔规则的事件重复执行任务)，**你可以将Runnable对象设置为在将来的某个时刻执行**。
+
+**GreenhouseScheduler** ScheduledThreadPoolExecutor的运用示例
+
+
+## Semaphore 信号量 ##
+
+正常的锁(concurrency.locks或synchronized锁)在任何时刻都**只允许一个任务访问一项资源**，而 **计数信号量** 允许**n个任务**同时访问这个资源。
+
+**Fat** 费时操作
+
+**Pool** 对象池 它管理着数量有限的对象，当要使用对象时可以签出它们，而用户使用时，可以将它们签回 Semaphore.acquire()，Semaphore.release()是关键
+
+**SemaphoreDemo** 
+
+
+## Exchanger ##
+
+**Exchanger**是在两个任务之间交换对象的栅栏。
+
+当这些任务进入栅栏时，它们各自拥有一个对象，当它们离开时，它们都拥有之前有对象持有的对象。
+
+**Exchanger**的典型应用场景是：一个任务在创建对象，这些对象的生产代价和高昂，而另一个任务在消费这些对象。通过这种方式，可以有更多的对象在被创建的同时被消费。
+
+**ExchangerDemo** 用Exchanger实现消费者-生产者
+
+# 仿真 #
+
+
+
+
 
 
 
