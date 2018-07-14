@@ -676,6 +676,70 @@ wait() 和 notifyAll()方法以一种非常低级的方式解决了任务互相�
 
 # java.util.concurrency的新构件 #
 
+## CountDownLatch倒数闩 ##
+
+This is used to synchronize one or more tasks by forcing them to wait for the completion of set of operations being performed by other tasks
+
+- CountDownLatch设置初始构造数字initNum，如100
+
+- latch.await()的任务将会阻塞，initNum为0开始后启动
+- latch.countDown() initNum--;
+
+---
+
+CountDownLatch的典型用法：
+
+将任务分成n份，创建n值的CountDownLatch
+
+当一个子任务完成，调用countDown() 闩 的 initNum--
+
+主任务调用await()进行阻塞，当子任务都完成了，主任务将继续
+
+
+**CountDownLatchDemo** CountDownLatch的用例
+
+---
+
+例子中 线程频繁使用 random.nextInt()引出**类库是否线性安全**的问题
+
+JDK文档并没有指出random.nextInt()是线性安全的
+
+只能通过源码阅读，搜索引擎进行查证
+
+这里了碰巧random.nextInt()是线性安全的
+
+## CyclicBarrier循环栅 ##
+
+CyclicBarrier适用于的情况：
+
+**你希望创建一组任务，它并行地执行工作，然后在进行下一个步骤之前等待，直至所有任务都完成（看起来有点像join()）。**
+
+它使得所有的并行任务都将在栅栏处队列，因此可以一致地向前移动。
+
+这非常像CountDownLatch，只是CountDownLatch是只触发一次的事件，而CyclicBarrier可以多次使用。
+
+**HorseRace** CyclicBarrier简单示例
+
+
+	T1---->|-------->|
+	       |         |。。。。。。
+	T2-->  |  ------>|
+	       CB        CB
+
+## DelayQueue延迟队列 ##
+
+DelayQueue是一个无界的BlockingQueue，用于放置实现了Delayed接口的对象，其中的**对象只能在其到期时才能从队列中取走**。
+
+这种队列是有序的，即队头对象的延迟到期时间最长。如果没有任何延期到期，那么就不会有任何头元素，并且poll()将返回null(null不能放置队列)
+
+**DelayQueueDemo**  DelayQueue演示示例
+
+## PriorityBlockingQueue ##
+
+
+
+
+
 
 
 
