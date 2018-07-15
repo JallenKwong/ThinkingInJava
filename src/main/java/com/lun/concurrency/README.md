@@ -14,7 +14,6 @@
 
 # Basic threading #
 
-
 	Thread.yield();
 
 This is static method is suggestion to the **thread scheduler**(the part of the Java threading mechanism that moves the CPU from one thread to the next)that says, "I've done the important parts of my cycle and this would be a good time to switch to another task for a while." It's completely optional.
@@ -770,10 +769,48 @@ DelayQueue是一个无界的BlockingQueue，用于放置实现了Delayed接口�
 
 # 仿真 #
 
+**并发最有趣也是最令人兴奋的用法就是创建仿真**
+
+通过使用并发，仿真的每个构建都可以成为其自身的任务，这使得仿真更容易编程。
+
+**BankTellerSimulation** 银行仿真
+
+**RestaurantWithQueues** 饭店仿真
+
+**CarBuilder** 汽车组装
+
+# 性能调优 #
+
+**SimpleMicroBenchmark** 简单的Lock和synchronized的性能测试
+
+上面的例子有两个主要问题
+
+1. 我们只有在这些互斥存在竞争的情况下，才能看到真正的性能差异，因此必须有多个任务尝试着访问互斥代码区。而在上面的示例中，每个互斥都是由单个main()线程在隔离的情况下测试。
+
+2. 编译器看到synchronized关键字，有可能会执行特殊的优化。
 
 
+目标测试：1.多任务，2.计算足够的复杂且不可预测
+
+**SynchronizationComparisons** 更完美的 Java同步功能测试
+
+**记住**，这个程序只给出了各种互斥方式之间的差异的趋势，而上面的输出也仅仅表示这些差异在我的特定环境下的特定机器上的表现。
+
+Lock，Atomic比synchronized高效许多
+
+synchronized根据可读性
+
+建议，synchronized关键字入手，只有性能方面调优时才替换为Lock对象。
+
+Atomic对象只有在非常简单的情况下才有用
+
+更安全的做法是：以更加传统的互斥方式入手，只有在性能方面的需求能够明确指示时，再替换为Atomic
 
 
+# 免锁容器 #
+
+
+# 总结 #
 
 
 
