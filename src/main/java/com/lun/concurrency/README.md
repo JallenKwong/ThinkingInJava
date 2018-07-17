@@ -250,7 +250,7 @@ There's also a single lock per class(as part of the Class Object for the class),
 
 **什么时候用synchronized?**
 
-*Java concurrency in practice* 的作者作出的解释
+《Java concurrency in practice》 的作者作出的解释
 
 > If you are **writing** a variable that might next be **read** by another thread, or **reading** a variable that might have last been **written** by another thread, you must use synchronization, and further, **both the reader and the writer must synchronize using the same monitor lock.**
 
@@ -693,7 +693,9 @@ wait() 和 notifyAll()方法以一种非常低级的方式解决了任务互相�
 
 **FixedDiningPhilosophers** 解决哲学家就餐(死锁示例)卡死问题，破坏第四条，最后一位哲学家先左后右拿**Chopstick**
 
-# java.util.concurrency的新构件 #
+# New Library components #
+
+java.util.concurrency的新构件
 
 ## CountDownLatch倒数闩 ##
 
