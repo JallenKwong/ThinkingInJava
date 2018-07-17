@@ -1,5 +1,25 @@
 # Concurrency #
 
+[Basic threading](#basic-threading)
+
+[Sharing resources](#sharing-resources)
+
+[Terminating tasks](#terminating-tasks)
+
+[Cooperation between tasks](#cooperation-between-tasks)
+
+[Deadlock](#deadlock)
+
+[New Library components](#new-library-components)
+
+[Simulation](#simulation)
+
+[Performance tuning](#performance-tuning)
+
+[Active objects](#active-objects)
+
+[Summary](#summary)
+
 **ThreadLocalVariableHolder** ThreadLocal运用
 
 **Restaurant** 生产者-消费者问题
@@ -496,7 +516,7 @@ This makes sense because one task should be able to call other synchronized meth
 
 多重try-finally 且 Thread.interrupted()的应用
 
-# Cooperation between task #
+# Cooperation between tasks #
 
 When you use threads to run more than one task at a time, you can keep one task from interfering with another task's resources by using a **lock**(**mutex**) to synchronize the behavior of the two tasks. If two tasks are stepping on each other over a shared resource(usually memory), you use **mutex** to allow only one task at a time to access that resource.
 
@@ -767,7 +787,7 @@ DelayQueue是一个无界的BlockingQueue，用于放置实现了Delayed接口�
 
 **ExchangerDemo** 用Exchanger实现消费者-生产者
 
-# 仿真 #
+# Simulation #
 
 **并发最有趣也是最令人兴奋的用法就是创建仿真**
 
@@ -779,7 +799,7 @@ DelayQueue是一个无界的BlockingQueue，用于放置实现了Delayed接口�
 
 **CarBuilder** 汽车组装
 
-# 性能调优 #
+# Performance tuning #
 
 **SimpleMicroBenchmark** 简单的Lock和synchronized的性能测试
 
@@ -807,7 +827,7 @@ Atomic对象只有在非常简单的情况下才有用
 更安全的做法是：以更加传统的互斥方式入手，只有在性能方面的需求能够明确指示时，再替换为Atomic
 
 
-# 免锁容器 #
+## 免锁容器 ##
 
 容器是所有编程中的基础工具
 
@@ -885,7 +905,7 @@ Java SE5特别添加了新的容器，通过使用更灵巧的计数消除加锁
 **ReaderWriterList** ReadWirteLock的读写示例
 
 
-# 活动对象 #
+# Active objects #
 
 上述的线程较复杂和难以使用
 
@@ -901,7 +921,7 @@ Java SE5特别添加了新的容器，通过使用更灵巧的计数消除加锁
 
 上面例子编写较麻烦，希望以后能有编译器直接支持。
 
-# 总结 #
+# Summary #
 
 使用Java线程进行并发程序设计的基础设计：
 
