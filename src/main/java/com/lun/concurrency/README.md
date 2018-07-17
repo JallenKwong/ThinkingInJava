@@ -872,7 +872,7 @@ Java SE5特别添加了新的容器，通过使用更灵巧的计数消除加锁
 
 **MapComparisons** synchronizedHashMap和ConcurrentHashMap在性能方面的比较结果。
 
-## 乐观加锁 Atomic 代替 synchronized 或 Lock##
+## 乐观加锁 Atomic 代替 synchronized 或 Lock ##
 
 尽管Atomic对象将执行像decrementAndGet这样的原子性操作，但是某些Atomic还允许你执行所谓的“**乐观加锁**”
 
