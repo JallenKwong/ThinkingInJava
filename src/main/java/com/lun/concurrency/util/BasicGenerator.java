@@ -3,6 +3,8 @@
 // with a default (no-arg) constructor.
 package com.lun.concurrency.util;
 
+import com.lun.util.Generator;
+
 public class BasicGenerator<T> implements Generator<T> {
 	private Class<T> type;
 

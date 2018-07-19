@@ -5,7 +5,7 @@ import java.util.concurrent.*;
 
 import com.lun.concurrency.semaphore.Fat;
 import com.lun.concurrency.util.BasicGenerator;
-import com.lun.concurrency.util.Generator;
+import com.lun.util.Generator;
 
 import java.util.*;
 
