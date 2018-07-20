@@ -4,8 +4,8 @@ package com.lun.concurrency.simulation;
 
 import java.util.concurrent.*;
 
-import com.lun.concurrency.simulation.menu.Course;
-import com.lun.concurrency.simulation.menu.Food;
+import com.lun.enumerated.menu.Course;
+import com.lun.enumerated.menu.Food;
 
 import java.util.*;
 
