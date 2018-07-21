@@ -10,12 +10,13 @@ enum Search {
 public class UpcastEnum {
 	public static void main(String[] args) {
 		Search[] vals = Search.values();
-		Enum e = Search.HITHER; // Upcast
+		Enum e = Search.HITHER; // 
 		// e.values(); // No values() in Enum
 		for (Enum en : e.getClass().getEnumConstants())
 			System.out.println(en);
 	}
 }
 /*
-
+HITHER
+YON
 */

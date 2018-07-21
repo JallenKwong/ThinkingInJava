@@ -20,13 +20,7 @@
 
 [Constant-specific methods](#constant-specific-methods)
 
-[](#)
-
-[](#)
-
-[](#)
-
-
+[Multiple dispatch](#multiple-dispatch)
 
 ## Basic enum features ##
 
@@ -156,15 +150,53 @@ enum实例与类有点相似
 
 [VendingMachine](VendingMachine.java) 自动售货机——一个很好的状态机例子
 
+## Multiple dispatch ##
 
+问题：当你要处理多种交互类型，程序可能会变得相当杂乱。
 
+举例来说，如果一个系统要分析和执行数学表达式。我们可能会声明Number.plus(Number)、Number.multiple(Number)等等，其中Number是各种数字对象的超类。
 
+然而，当你声明a.plus(b)、你并不知道a或b的确切类型，**如何能让它们正确地交互？**
 
+---
 
+Java只支持**单路分发**。也就是说，如果要执行的操作包含了不止一个类型未知的对象时，那么**Java的动态绑定机制只能处理其中一个类型**。这就无法解决我们上面提到的问题。所以，你必须自己来判定其他类型，从而实现自己的动态绑定行为。
 
+---
 
+解决上面问题的方法就是**多路分发**。多态只能发生在方法调用时，所以，**若果你想使用两路分发，那么就必须有两个方法的调用：第一个方法调用决定第一个未知类型，第二个方法调用决定第二个未知的类型**。要利用多路分发，程序员**必须为每一个类型提供一个实际的方法调用**，如果你要处理两个不同的类型体系，就需要为每个类型体系执行一个方法调用。
 
+一般而言，程序员需要有设定好的某种配置，以便一个方法调用能够引出更多的方法调用，从而能够在这个过程中处理多种类型。
 
+为了达到这种效果，我们需要与多个方法一同工作：因为每个分发都需要一个方法调用。
 
+[Outcome](Outcome.java)
 
+[RoShamBo1](RoShamBo1.java)多路分发示例
+
+### 使用enum分发 ###
+
+[Competitor](Competitor.java)
+
+[RoShamBo](RoShamBo.java)
+
+[RoShamBo2](RoShamBo2.java)
+
+### 使用常量相关的方法 ###
+
+[RoShamBo3](RoShamBo3.java)
+
+[RoShamBo4](RoShamBo4.java)
+
+### 使用EnumMap分发 ###
+
+[RoShamBo5](RoShamBo5.java)
+
+### 使用二维数组分发 ###
+
+多个分发程序中，这代码最简洁
+
+[RoShamBo6](RoShamBo6.java)
+
+感悟：多路分发感觉像策略模式 
 
