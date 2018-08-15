@@ -36,6 +36,7 @@ public class LostMessage {
 			System.out.println(e);
 		}
 	}
-} /*
-	 * Output: A trivial exception
-	 */// :~
+} 
+/*
+* Output: A trivial exception
+*/// :~
