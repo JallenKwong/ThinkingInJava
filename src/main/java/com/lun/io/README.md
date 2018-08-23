@@ -32,16 +32,101 @@ File类不仅仅只代表存在的文件或目录。也可以用File对象来创
 
 ## 输入和输出 ##
 
+InputStream或Reader 的read()，读取单个字节或者字节数组
 
+OutputStream或Writer的write()，写单个字节或者字节数组
 
+### InputStream ###
 
+![](image/inputstream.png)
 
+### OutputStream ###
 
+![](image/outputstream.png)
 
+### Reader ####
 
+![](image/reader.png)
 
+### Writer ###
 
+![](image/writer.png)
 
+InputStream和OutputStream在以面向**字节**形式的IO中仍可以提供极有价值的功能，Reader和Writer则提供兼容Unicode与面向**字符**IO功能
+
+### 数据的来源和去处 ###
+
+InputStream 与 Reader 关系
+
+![](image/relation.png)
+
+### 更改流行为 ###
+
+![](image/filter.png)
+
+### 未发生变化的类 ###
+
+![](image/unchange.png)
+
+## RandomAccessFile ##
+
+适用于由大小已知的记录组成的文件，所以可以使用**seek()**将记录从一处转移到另一处，然后读取或者修改记录。
+
+在JDK 1.4 中，RandomAccessFile的大多数功能（但不是全部）由nio存储映射文件所取代。
+
+## IO流的典型使用方式 ##
+
+### 缓冲输入文件 ###
+
+[BufferedInputFile](BufferedInputFile.java)
+
+### 从内存输入 ###
+
+[MemoryInput](MemoryInput.java)
+
+### 格式化的内存输入 ###
+
+[FormattedMemoryInput](FormattedMemoryInput.java) 一个字节一个字节地读取
+
+[TestEOF](TestEOF.java) 使用available()方法查看还有多少可供存取的字符，然后，一次一个字节地读取文件
+
+注意，available()的工作方式会随着所读取的媒介类型的不同而有所不同；字面意思就是“在没有阻塞的情况下所能读取的字节数”。对于文件，这意味着整个文件；但是对于不同类型的流，可能就不是这样，因此要谨慎使用。
+
+### 基本的文件输出 ###
+
+FileWriter对象可以先文件写入数据
+
+[BasicFileOutput](BasicFileOutput.java)
+
+LineNumberInputStream没卵用
+
+**文本文件输出的快捷方式**
+
+Java SE5在PrintWriter中添加了一个辅助构造器，使得你**不必**在每次希望创建文本并向其中写入时，都去执行所有的装饰工作。
+
+[FileOutputShortcut](FileOutputShortcut.java)
+
+### 存储和恢复数据 ###
+
+[StoringAndRecoveringData](StoringAndRecoveringData.java)DataOutputStream 和 DataInputStream 存取或读取基本类型
+
+### 读取随机访问文件 ###
+
+利用**seek()**可以到处移动
+
+[UsingRandomAccessFile](UsingRandomAccessFile.java)
+
+### 管道流 ###
+
+PipedInputStream
+
+PipedOutStream
+
+PipedReader
+
+PipedWriter
+
+用在多线程问题上
 
 
 
