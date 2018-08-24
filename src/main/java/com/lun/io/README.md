@@ -128,5 +128,44 @@ PipedWriter
 
 用在多线程问题上
 
+## 文件读写的实用工具 ##
 
+一个很常见的程序化任务就是读取文件到内存，修改，然后再写出。Java I/O类库的问题之一就是：它需要编写相当多的代码去执行这些常用操作——没有基本的帮助功能可以为我们做一切。所以编写一个工具用来简化对文件读写操作。
 
+[TextFile](../util/TextFile.java) 一个工具用来简化对文件读写操作
+
+另一种解决读取文件问题的方法是使用在Java SE5中引入的java.util.Scaner类。但是这能读不能写，主要是设计用来创建编程语言的扫描器或“小语言”
+
+### 读取二进制文件 ###
+
+[BinaryFile](../util/BinaryFile.java)
+
+.class 文件都是以十六进制字符“CAFEBABE”
+
+## 标准IO ##
+
+System.in
+
+System.out
+
+System.err
+
+### 从标准输入中读取 ###
+
+[Echo](Echo.java)
+
+### 将System.out转换成PrintWriter ###
+
+[ChangeSystemOut](ChangeSystemOut.java)
+
+### 标准IO重定向 ###
+
+System.setIn(InputStream)
+
+System.setOut(PrintStream)
+
+System.setErr(PrintStream)
+
+[Redirecting](Redirecting.java)
+
+## 进程控制 ##
