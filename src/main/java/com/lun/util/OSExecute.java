@@ -10,7 +10,9 @@ public class OSExecute {
 		boolean err = false;
 		try {
 			Process process = new ProcessBuilder(command.split(" ")).start();
-			BufferedReader results = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			
+			//Windows默认的编码是GBK, 不添加GBK, results会乱码
+			BufferedReader results = new BufferedReader(new InputStreamReader(process.getInputStream(),"GBK"));
 			String s;
 			while ((s = results.readLine()) != null)
 				System.out.println(s);
@@ -31,5 +33,9 @@ public class OSExecute {
 		}
 		if (err)
 			throw new OSExecuteException("Errors executing " + command);
+	}
+	
+	public static class OSExecuteException extends RuntimeException {
+		public OSExecuteException(String why) { super(why); }
 	}
 } /// :~

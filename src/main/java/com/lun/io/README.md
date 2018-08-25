@@ -169,3 +169,64 @@ System.setErr(PrintStream)
 [Redirecting](Redirecting.java)
 
 ## 进程控制 ##
+
+在Java内部执行其他操作系统的程序，并且要控制这些程序的输入和输出。
+
+[OSExecute](../util/OSExecute.java)
+
+[OSExecuteDemo](../util/OSExecuteDemo.java)
+
+## 新IO ##
+
+JDK 1.4的java.nio.* 包中引入了新的Java IO类库，其目的在于提高速度。实际上，旧的IO包已经使用nio重新实现，以便充分利用这种速度提高，因此，即使我们不显示地用nio编写大妈，也能从中受益。 
+
+速度的提高来自于所使用的结构更接近操作系统IO方式：
+
+**通道和缓冲器**。
+
+我们可以把它想象成一个煤矿，通常是一个包含煤层（数据）的矿藏，而缓冲器则是派送到矿藏的卡车。
+
+卡车载满煤炭而归，再从卡车上获得煤炭。也就是说，我们并没有直接和通道交互;我们只是和缓冲器交互，并把缓冲器派送到通道。
+
+通道要么从缓冲器获得数据，要么向缓冲器发送数据。
+
+唯一直接与通道交互的缓冲器是ByteBuffer，也就是说，可以存储未加工字节的缓冲器。
+
+**FileInputStream**,**FileOutputStream**,即读又写得**RandomAccessFile**。注意这些字节操纵流，与低层的nio性质一致。
+
+**Reader**和**Writer**这种字符模式类不能用于产生通道；但是java.nio.channels.Channels类提供了实用方法
+
+[GetChannel](GetChannel.java) 用Channel向文件写入字符串并且之后读取这字符串
+
+[ChannelCopy](ChannelCopy.java) 用FileChannel实现简单的文件复制
+
+[TransferTo](TransferTo.java) FileChannel的transferTo()/transferFrom实现简单的文件复制
+
+### 转换数据 ###
+
+
+## 压缩 ##
+
+
+## 对象序列化 ##
+
+
+## XML ##
+
+	<dependency>
+	    <groupId>xom</groupId>
+	    <artifactId>xom</artifactId>
+	    <version>1.2.5</version>
+	</dependency>
+
+[Person](xml/Person.java)
+
+[People](xml/People.java)
+
+## Preferences ##
+
+Preferences API用于存储和读取用户的偏好(preferences)以及程序配置项的设置
+
+只能用这玩意存储基本类型和字符串，并且每个字符串的存储长度不能超过8K
+
+[PreferencesDemo](PreferencesDemo.java)
