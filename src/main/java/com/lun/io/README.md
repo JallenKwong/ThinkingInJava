@@ -266,14 +266,63 @@ ByteBuffer是以**高位优先**的形式存储数据的，并且网上传送时
 
 **注意**：ByteBuffer是将数据移进移出通道的为方式，并且我们**只能**创建一个dulde基本类型缓冲器，或者使用“as”方法从ByteBuffer中获取。也就是说，**我们不能把基本类型的缓冲器转换成ByteBuffer**。然而，由于我们可以经由视图缓冲器将基本类型数据移进移出ByteBuffer，所有这就不是什么真正的限制。
 
-### 用缓冲器操作数据 ###
+### 缓冲器的细节 ###
 
+Buffer由数据和可以高效地访问及操纵这些数据的四个索引组成，这四个索引是：mark标记、position位置、limit界限和capacity容量
+
+下面用于设置和复位索引以及查询它们的值的方法
+
+![](image/detail.png)
+
+[UsingBuffers](UsingBuffers.java) 交换相邻字符
+
+下面是上例的symmetricScramble()流程解释图
+
+![](image/detail2.png)
+
+![](image/detail3.png)
+
+### 内存映射文件 ###
+
+内存映射文件允许我们创建和修改那些因为太大而不能放入内存的文件。
+
+有了内存映射文件，我们就可以假定整个文件都放在内存中，而且可以完全把它当做非常大的数组来访问。
+
+[LargeMappedFiles](LargeMappedFiles.java)
+
+[MappedIO](MappedIO.java) 性能上进行简单的测试，看出**映射文件放**往往可以更加显著地加快速度
+
+### 文件加锁 ###
+
+JDK 1.4 引入了文件加锁机制，它允许我们同步访问某个作为共享资源的文件。
+
+竞争同一文件的两个线程可能在不同的Java虚拟机上；或者一个Java线程，另一个是操作系统中其他的某个本地线程。
+
+文件锁对其他的操作系统进程是可见的，因为Java的文件加锁字节映射到了本地操作系统的加锁工具。
+
+[FileLocking](FileLocking.java)
+
+[LockingMappedFiles](LockingMappedFiles.java) 对映射文件的部分加锁
 
 ## 压缩 ##
 
+![](image/compress.png)
+
+[GZIPcompress](GZIPcompress.java) 对单个文件进行压缩的例子
+
+[ZipCompress](ZipCompress.java) 对Zip进行多文件保存，Checksum类来计算和校验和的方法
+
+### Java档案文件（Jar） ###
+
+![](image/jar.png)
 
 ## 对象序列化 ##
 
+### 寻找类 ###
+
+### 序列化的控制 ###
+
+### 使用“持久性” ###
 
 ## XML ##
 
