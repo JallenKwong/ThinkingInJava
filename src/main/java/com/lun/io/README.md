@@ -204,6 +204,70 @@ JDK 1.4的java.nio.* 包中引入了新的Java IO类库，其目的在于提高�
 
 ### 转换数据 ###
 
+[BufferToText](BufferToText.java) ByteBuffer 转换成 CharBuffer，过程需要 编码问题
+
+[AvailableCharSets](AvailableCharSets.java) java.nio.charset.Charset类提供把数据编码成多种不同类型的字符集
+
+### 获取基本类型 ###
+
+尽管ByteBuffer只能保存字节类型的数据，但是它具有可以从其所容纳的字节中产生出各种不同基本类型值的方法
+
+[GetData](GetData.java) 插入和抽取各种数值
+
+### 视图缓冲器 ###
+
+View Buffer可以让我们通过某个特定的基本数据类型的视窗查看其底层的ByteBuffer。ByteBuffer依然是实际存储数据的地方，“支持”着前面的尸体，因此，对视图的任何修改都会映射成为对ByteBuffer中数据的修改。
+
+[IntBufferDemo](IntBufferDemo.java)
+
+一旦底层的ByteBuffer通过视图缓冲器填满了证书或其他基本类型是，就可以直接被写到通道中了。正像从通道中读取那样容易，然后使用视图缓冲器可以把任何数据都转换成某一特定的基本类型。
+
+[ViewBuffers](ViewBuffers.java) 通过在不同的视图缓冲器，将同一个字节序列翻译成short、int、float、long、double类型数据
+
+ByteBuffer通过一个被“包装”过的8字节数组产生，然后通过各种不同的基本类型的视图缓冲器显示了出来。
+
+![](image/viewbuffers.png)
+
+### 字节存放次序 ###
+
+不同的机器可能会使用不同的字节排序方法来存储数据。
+
+**Big endian 高位优先**将最重要的字节存放在地址最低的存储器单元
+
+**Little endian 低位优先**将最重要的字节放在地址最高的存储器单元
+
+
+	字符a = 97 = 00000000 01100001
+				 高位     低位
+	
+	地址默认是 从左到右 增大
+
+	---
+	
+	助记
+
+	数的高位 放置 低地址是 大端（高低得大）
+	数的低位 放置 低地址是 小端（低低得小）
+
+	大端常用（因为符合阅读习惯）
+
+
+ByteBuffer是以**高位优先**的形式存储数据的，并且网上传送时也常常使用高位优先的形式。
+
+![](image/endian.png)
+
+[Endians](Endians.java) 可以修字符中的字节次序
+
+### 用缓冲器操纵数据 ###
+
+![](image/nio.png)
+
+上图阐明nio类之间的关系，便于立即怎么移动和转换数据。例如，如果想把一个字节数组写到文件中去，那么就应该使用ByteBuffer.wrap把字节数组包装起来，然后用getChannel()在FileOutputStream上打开一个通道，接着将来置于ByteBuffer的数据写到FileChannel中
+
+**注意**：ByteBuffer是将数据移进移出通道的为方式，并且我们**只能**创建一个dulde基本类型缓冲器，或者使用“as”方法从ByteBuffer中获取。也就是说，**我们不能把基本类型的缓冲器转换成ByteBuffer**。然而，由于我们可以经由视图缓冲器将基本类型数据移进移出ByteBuffer，所有这就不是什么真正的限制。
+
+### 用缓冲器操作数据 ###
+
 
 ## 压缩 ##
 
