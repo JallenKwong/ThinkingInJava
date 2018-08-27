@@ -1,28 +1,28 @@
 # IO #
 
-[File类](#File类)
+[File类](#file类)
 
 [输入和输出](#输入和输出)
 
-[RandomAccessFile](#RandomAccessFile)
+[RandomAccessFile](#randomaccessfile)
 
-[IO流的典型使用方式](#IO流的典型使用方式)
+[IO流的典型使用方式](#io流的典型使用方式)
 
 [文件读写的实用工具](#文件读写的实用工具)
 
-[标准IO](#标准IO)
+[标准IO](#标准io)
 
 [进程控制](#进程控制)
 
-[新IO](#新IO)
+[新IO](#新io)
 
 [压缩](#压缩)
 
 [对象序列化](#对象序列化)
 
-[XML](#XML)
+[XML](#xml)
 
-[Preferences](#Preferences)
+[Preferences](#preferences)
 
 ## File类 ##
 
