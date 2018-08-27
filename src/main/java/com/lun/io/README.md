@@ -1,10 +1,34 @@
 # IO #
 
-## The File Class ##
+[File类](#File类)
+
+[输入和输出](#输入和输出)
+
+[RandomAccessFile](#RandomAccessFile)
+
+[IO流的典型使用方式](#IO流的典型使用方式)
+
+[文件读写的实用工具](#文件读写的实用工具)
+
+[标准IO](#标准IO)
+
+[进程控制](#进程控制)
+
+[新IO](#新IO)
+
+[压缩](#压缩)
+
+[对象序列化](#对象序列化)
+
+[XML](#XML)
+
+[Preferences](#Preferences)
+
+## File类 ##
 
 The **File** class has a deceiving name; you might think it refers to a file, but it doesn't. In fact, "FilePath" would have been a better name for the class. It can be represent the name of particular file or the name of a set of files in a directory.
 
-### A directory lister ###
+### 目录列出器 ###
 
 [DirList](DirList.java) FilenameFilter 及 new File().list() 的运用 （涉及到策略模式）
 
@@ -318,11 +342,93 @@ JDK 1.4 引入了文件加锁机制，它允许我们同步访问某个作为共
 
 ## 对象序列化 ##
 
+Java的**对象序列化**将那些实现了Serializable接口的对象转换成一个字节序列，并能够在以后将这个字节序列完全恢复为原来的对象。
+
+这一个过程甚至可通过网络进行，这意味着序列化机制自动弥补不同操作系统之间的差异。也就是说，可以在运行Windows系统的计算机上创建一个对象，将其序列化，通过网络将它发给一台运行Unix系统的计算机，然后在那里准确地重新组装，而却不必担心数据在不同机器上的表示会不同，也不必关心字节的顺序或者其他任何细节。
+
+对象序列化的概念加入到语言中为了支持两种特性：
+
+1. Java的**远程方法调用**Remote Method Invocation，它使存活与其他计算机上的对象使用起来就像是活在本机上一样。当向远程对象发送消息时，通过对象序列化来传输参数和返回值。
+
+2. 对于JavaBeans来说，对象的序列化也是必需的。使用一个Bean时，一般情况下是在设计阶段对它的状态信息进行配置。这种状态信息必须保存下来，并在程序启动时进行后期恢复，这种具体工作就是由对象序列化完成的。
+
+[Worm](Worm.java)
+
 ### 寻找类 ###
+
+**问题**：将一个对象从它的序列化状态中恢复出来，有哪些工作是必须的呢？举例来说，假如我们将一个对象序列化，并通过网络将其作为文件传给另一台计算机；那么，另一台计算机上的程序可以只利用该文件内容来还原这个对象。
+
+[Alien](Alien.java)
+
+[FreezeAlien](FreezeAlien.java)
+
+[ThawAlien](xfiles/ThawAlien.java) 该示例说明上问题是可以的，当要确保Alien,class要在Java虚拟机上出现，否则ClassNotFoundException
 
 ### 序列化的控制 ###
 
+**问题**：默认的序列化机制并不难操纵。然而，如果有特殊的需要那又该怎么办呢？例如：
+
+1. 也许要考虑特殊的安全问题，而且你不希望对象的某一部分被序列化
+2. 或者一个对象被还原以后，某对象需要重新创建，从而不必将该子对象序列化
+
+解决方案：通过实现**Externalizable**接口代替**Serializable**.
+
+**Externalizable**增添writeExternal()和readExternal()
+
+[Blips](Blips.java)
+
+对于Serializable对象，对象完全以它存储的二进制位为基础构造，而不调用构造器。
+
+对于Externalizable对象，所有普通的默认构造器都会被调用（包括在字段定义时的初始化），然后调用readExternal()。
+
+**必须注意这一点**——所有默认的构造器都会被调用，才能使Externalize对象产生正确的行为。
+
+[Blip3](Blip3.java) 示范了如何完整保存和恢复一个Externalizable对象
+
+### transient(瞬时)关键字 ###
+
+如果我们正在操作的是一个Serializable对象，那么所有序列化操作都会自动进行。为了能够给予控制，可以用**transient**(瞬时)关键字逐个字段地关闭序列化，它的意思是“**不用麻烦你保存或恢复数据——我自己会处理**”
+
+[Logon](Logon.java)
+
+### Externalizable的替代方法 ###
+
+实现Serializable接口，必须具有准确的方法特征签名
+
+	private void writeObject(ObjectOutputStream stream) throws IOException {
+	}
+
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+	}
+
+实际上我们并没有从这个类的其他方法中调用它们，而是ObjectOutputStream和ObjectInputStream对象的writeObject()和readObject()方法调用你的对象的writeObject()和readObject()方法。
+
+疑问：ObjectOutputStream和ObjectInputStream对象怎样访问你的类中的private方法的。我们只能假设这正是序列化神奇的一部分（反射）
+
+[SerialCtl](SerialCtl.java) 
+
 ### 使用“持久性” ###
+
+一个比较诱人的使用序列化技术的想法是：存储程序的一些状态，以便我们随后可以很容易地将程序恢复到当前状态。
+
+但是在我们能够这样做之前，必须回答几个问题：
+
+1. 如果我们将两个对象——它们都具有第三个对象的引用——进行序列化，会发生什么情况？
+
+2. 当我们从它们的序列化状态恢复这两个对象时，第三个对象会只出现一次吗？
+
+3. 如果将这两个对象序列化成独立的文件，然后在代码的不同部分对它们进行反序列还原，又会怎样了？
+
+
+[MyWorld](MyWorld.java) 解释上面的问题
+
+只要将任何对象序列化到单一流中，就可以恢复出与我们写出时的对象网，并且没有任何意外重复复制出的对象。
+
+[StoreCADState](StoreCADState.java) 模拟CAD系统实现序列化
+
+[RecoverCADState](RecoverCADState.java) 恢复上例的存储的序列化的数据
+
+序列化静态字段，需要用静态方法参考 **RecoverCADState** 的Line的静态方法
 
 ## XML ##
 

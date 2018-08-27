@@ -22,6 +22,7 @@ public class GZIPcompress {
 			out.write(c);
 		in.close();
 		out.close();
+		
 		System.out.println("Reading file");
 		BufferedReader in2 = new BufferedReader(
 				new InputStreamReader(new GZIPInputStream(new FileInputStream("test.gz"))));
