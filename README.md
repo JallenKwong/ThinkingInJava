@@ -4,6 +4,8 @@
 
 [String](src/main/java/com/lun/string/)
 
+[Type information](src/main/java/com/lun/typeinformation/)
+
 [Arrays](src/main/java/com/lun/arrays/)
 
 [I/O](src/main/java/com/lun/io/)
