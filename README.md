@@ -4,6 +4,8 @@
 
 [String](src/main/java/com/lun/string/)
 
+[Holding Your Objects](src/main/java/com/lun/holding/)
+
 [Type information](src/main/java/com/lun/typeinformation/)
 
 [Arrays](src/main/java/com/lun/arrays/)
