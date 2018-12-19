@@ -7,14 +7,14 @@ import java.util.*;
 import com.lun.util.Sets;
 
 public class ContainerMethodDifferences {
-	static Set<String> methodSet(Class<?> type) {
+	public static Set<String> methodSet(Class<?> type) {
 		Set<String> result = new TreeSet<String>();
 		for (Method m : type.getMethods())
 			result.add(m.getName());
 		return result;
 	}
 
-	static void interfaces(Class<?> type) {
+	public static void interfaces(Class<?> type) {
 		System.out.print("Interfaces in " + type.getSimpleName() + ": ");
 		List<String> result = new ArrayList<String>();
 		for (Class<?> c : type.getInterfaces())
@@ -22,12 +22,12 @@ public class ContainerMethodDifferences {
 		System.out.println(result);
 	}
 
-	static Set<String> object = methodSet(Object.class);
+	public static Set<String> object = methodSet(Object.class);
 	static {
 		object.add("clone");
 	}
 
-	static void difference(Class<?> superset, Class<?> subset) {
+	public static void difference(Class<?> superset, Class<?> subset) {
 		System.out.print(superset.getSimpleName() + " extends " + subset.getSimpleName() + ", adds: ");
 		Set<String> comp = Sets.difference(methodSet(superset), methodSet(subset));
 		comp.removeAll(object); // Don't show 'Object' methods
