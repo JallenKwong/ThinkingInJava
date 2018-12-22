@@ -19,8 +19,8 @@ public class AsListInference {
       new Crusty(), new Slush(), new Powder());
 
     // Won't compile://Java 8可以运行，
-     List<Snow> snow2 = Arrays.asList(
-       new Light(), new Heavy());
+//     List<Snow> snow2 = Arrays.asList(
+//       new Light(), new Heavy());
     // Compiler says:
     // found   : java.util.List<Powder>
     // required: java.util.List<Snow>
