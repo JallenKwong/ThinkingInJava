@@ -16,8 +16,15 @@
 
 [Understanding Maps](#)
 
-[](#)
+[Hashing and hash codes](#)
 
+[Choosing an implementation](#)
+
+[Utilities](#)
+
+[Holding references](#)
+
+[Java 1.0/1.1 containers](#)
 
 ## Full container taxonomy ##
 
@@ -363,6 +370,159 @@ TreeSet存在的唯一原因是它可以维持元素的排序状态，因此，�
 
 ### 对Map的选择 ###
 
+[MapPerformance](MapPerformance.java)
 
+PS.上述的测试在本人机子上的**运行结果**与书本上的相比，有明显出入。
 
+**HashMap的性能因子**
+
+- **Capacity**: The number of buckets in the table.
+- **Initial capacity**: The number of buckets when the table is created. HashMap and HashSet have constructors that allow you to specify the initial capacity.
+- **Size**: The number of entries currently in the table.
+- **Load factor负载因子**: Size/capacity. A load factor of o is an empty table, 0.5 is a half-full table, etc. A lightly loaded table will have few collisions and so is optimal for insertions and lookups (but will slow down the process of traversing with an iterator).
+HashMap and HashSet have constructors that allow you to specify the load factor, which means that when this load factor is reached, the container will automatically increase the capacity (the number of buckets) by roughly doubling it and will redistribute the existing objects into the new set of buckets (this is called rehashing). 
+
+**The default load factor** used by HashMap is **0.75** (it doesn’t rehash until the table is threefourths full). This seems to be a good trade-off between time and space costs. A higher load factor decreases the space required by the table but increases the lookup cost, which is important because lookup is what you do most of the time (including both get( ) and put()). 
+
+## 实用方法 ##
+
+java.util.Collections类内部的静态方法。
+
+Method|Description
+---|---
+**checkedCollection**(Collection&lt;T>, Class&lt;T> type)<br>**checkedList**(List&lt;T>, Class&lt;T> type)<br>**checkedMap**(Map&lt;K,V>,Class &lt;K> keyType,Class &lt;V> valueType)<br>**checkedSet**(Set&lt;T>,Class&lt;T> type)<br>**checkedSortedMap**(SortedMap&lt;K,V>,Class&lt;K> keyType,Class &lt;V> valueType)<br>**checkedSortedSet**(SortedSet&lt;T>,Class&lt;T> type)|Produces a dynamically type-safe view of a Collection, or a specific subtype of Collection. Use this when it’s not possible to use the statically checked version. These were shown in the Generics chapter under the heading "Dynamic type safety."
+**max**(Collection)<br>**min**(Collection)|Produces the maximum or minimum element in the argument using the natural comparison method of the objects in theCollection.
+**max**(Collection, Comparator)<br>**min**(Collection, Comparator)|Produces the maximum or minimum element in the Collection using theComparator.
+**indexOfSubList**(List source, List target)|Produces starting index of the first place where target appears inside source, or -1 if none occurs.
+**lastIndexOfSubList**(List source, List target)|Produces starting index of the last place where target appears inside source, or -1 if none occurs.
+**replaceAll**(List&lt;T>,T oldVal, T newVal)|Replaces all oldVal with newVal.
+**reverse**(List)|Reverses all the elements in place.
+**reverseOrder**( )<br>**reverseOrder**(Comparator&lt;T>)|Returns a Comparator that reverses the natural ordering of a collection of objects that implementComparable&lt;T>. The second version reverses the order of the supplied Comparator.
+**rotate**(List, int distance)|Moves all elements forward by distance, taking the ones off the end and placing them at the beginning.
+**shuffle**(List)<br>**shuffle**(List, Random)|Randomly permutes the specified list. The first form provides its own randomization source, or you may provide your own with the second form.
+**sort**(List&lt;T>)<br>**sort**(List&lt;T>,Comparator&lt;? super T> c)|Sorts the List&lt;T> using its natural ordering. The second form allows you to provide a Comparator for sorting.
+**copy**(List&lt;? super T> dest, List&lt;? extends T> src)|Copies elements from src to dest.
+**swap**(List, int i, int j)|Swaps elements at locations i and j in the List. Probably faster than what you’d write by hand.
+**fill**(List&lt;? super T>, T x)|Replaces all the elements of list with x.
+**nCopies**(int n, T x)|Returns an immutable List&lt;T> of size n whose references all point to x.
+**disjoint**(Collection, Collection)|Returns true if the two collections have no elements in common.
+**frequency**(Collection, Object x)|Returns the number of elements in the Collection equal to x.
+**emptyList**()<br>**emptyMap**()<br>**emptySet**()|Returns an immutable empty List,Map, or Set. These are generic, so the resulting Collection will be parameterized to the desired type.
+**singleton**(T x)<br>**singletonList**(T x)<br>**singletonMap**(K key, V value)|Produces an immutable Set&lt;T>,List&lt;T>, or Map&lt;K,V> containing a single entry based on the given argument(s).
+**list**(Enumeration&lt;T> e)|Produces an ArrayList&lt;T> containing the elements in the order in which they are returned by the (old-style) Enumeration (predecessor to the Iterator). For converting from legacy code.
+**enumeration**(Collection&lt;T>)|Produces an old-style Enumeration&lt;T> for the argument. 
+
+[Utilities](Utilities.java)
+
+### List的排序和查询 ###
+
+[ListSortSearch](ListSortSearch.java)
+
+### 设定Collection或Map为不可修改 ###
+
+unmodifiableCollection/unmodifiableList/unmodifiableSet/unmodifiableMap等
+
+[ReadOnly](ReadOnly.java)
+
+### Collection或Map的同步控制 ###
+
+[Synchronization](Synchronization.java)
+
+**快速报错**
+
+Java容器有一种保护机制，能够防止多个进程同时修改同一个容器的内容。
+
+若迭代遍历某个容器的过程中，另一个进程介入其中，并且插入、删除或修改此容器内的某个对象，那么就会出现问题；也许迭代过程已经处理过容器中的该元素，也许还未处理，也许带调用size()之后容器的尺寸收缩了——还有许多灾难情景。
+
+Java容器类类库采用**快速报错fail-fast**机制。它会探查容器上的任何除了你的进程所进行的操作以外的所有变化，一旦它发现其它进程修改了容器，就会立刻抛出**ConcurrentModificationException**
+
+Concurrent同时发生的
+Modification修改
+
+[FailFast](FailFast.java) 会抛出ConcurrentModificationException的示例
+
+ConcurrentHashMap/CopyOnWriteArrayList/CopyOnWriteArraySet可避免ConcurrentModificationException
+
+## Holding references ##
+
+java.lang.ref的一组类
+
+Reference派生的子类
+- SoftReference
+- WeakReference
+- PhantomReference
+
+当垃圾回收器Garbage Collector GC正在考察对象只能通过某种Reference对象才“可获得”时，上述这些不同Reference派生类为GC停供了不同级别的间接性指示。
+
+对象是**可获得**reachable，是指此对象可在程序中的某处找到。这意味着你在栈中有一个普通的引用，而它正指向此对象；
+
+也可能是你的引用指向某个对象，而那个对象含有另一个引用指向正在讨论的对象；
+
+也可能有更多的中间链接。
+
+若有个对象是“可获得的”，GC就不能释放它，因为它仍然为你的程序所有。
+
+若有个对象不是“可获得的”，那么你的程序将无法使用到它，所以将其回收是安全的。
+
+**如果想继续持有某个对象的引用，希望以后还能够访问到该对象，但是也希望能够允许GC释放它，这时就应该使用Reference对象。**这样，你可以继续使用该对象，而在内存消耗殆尽时候又允许释放该对象。
+
+以Reference对象作为你和普通引用之间的媒介（代理），另外，一定不能有普通的引用指向那个对象，这样就能达到上述目的。（**普通引用指没有经Reference对象包装过的引用**）。若GC发现某个对象通过普通引用是可获得的，该对象就不会被释放。
+
+**SoftReference**、**WeakReference**和**PhantomReference**由强到弱排列，对应不同级别的“可获得性”。
+
+- SoftReference 用以实现内存敏感的高速缓存
+- WeakReference 为实现“规范映射canonicalizing mappings”而设计的，它不妨碍垃圾回收器回收映射的“键”（或“值”）。“规范映射”中对象的实例可以在程序的多处被同时使用，以节省存储空间。
+- PhantomReference 用以调度回收前的清理工作，它比Java终止机制更灵活
+
+**SoftReference**、**WeakReference**时，可以选择是否要将它们放入**ReferenceQueue**(“回收前清理工作”的工具)。**PhantomReference**只能依赖于**ReferenceQueue**。
+
+[References](References.java)
+
+### WeakHashMap ###
+
+它被用来保存WeakReference。
+
+它使得规范映射更易于使用。
+
+在这种映射中，每个值只保存一份实例以节省存储空间。
+
+当程序需要那个“值”的时候，便于映射中查询现有的对象，然后使用它（而不是重新再创建）。
+
+映射可将值作为其初始化中的一部分，不过通常是在需要的时候才生成“值”。
+
+这是一种节约存储空间的技术，因为WeakHashMap允许垃圾回收器自动清理键和值，所以它显得十分便利。对于WeakHashMap添加键和值的操作，则没有什么特殊要求。映射会自动使用WeakReference包装它们。
+
+允许清理元素的触发条件是，不再需要此键：
+
+[CanonicalMapping](CanonicalMapping.java)
+
+## Java 1.0/1.1的容器 ##
+
+古董容器，了解一下，现在就要再用了。
+
+### Vector和Enumeration ###
+
+Vector现已被Collection和List代替
+
+Enumeration 现已被iterator代替
+
+[Enumerations](Enumerations.java)
+
+### HashTable ###
+
+HashTable与HashMap类似
+
+### Stack ###
+
+Stack现由LinkedList代替
+
+[Stacks](Stacks.java)
+
+### BitSet ###
+
+若想高效率存储大量“开/关”信息，Bit是很好的选择。不过它的效率仅是对空间而言；若需高效的访问时间，BitSet比本地数组稍慢一些。
+
+[Bits](Bits.java)
+
+若拥有一个可以命名固定的标志集合，那么EnumSet与BitSet相比，通常是一种更好的选择。
 
