@@ -1,30 +1,30 @@
 # Containers in Depth #
 
-[Full container taxonomy](#)
+[Full container taxonomy](#full-container-taxonomy)
 
-[Filling containers](#)
+[Filling containers](#filling-containers)
 
-[Collection functionality](#)
+[Collection functionality](#collection-functionality)
 
-[Optional operations](#)
+[Optional operations](#optional-operations)
 
-[List functionality](#)
+[List functionality](#list-functionality)
 
-[Sets and storage order](#)
+[Sets and storage order](#sets-and-storage-order)
 
-[Queues](#)
+[Queues](#queues)
 
-[Understanding Maps](#)
+[Understanding Maps](#understanding-maps)
 
-[Hashing and hash codes](#)
+[Hashing and hash codes](#hashing-and-hash-codes)
 
-[Choosing an implementation](#)
+[Choosing an implementation](#choosing-an-implementation)
 
-[Utilities](#)
+[Utilities](#utilities)
 
-[Holding references](#)
+[Holding references](#holding-references)
 
-[Java 1.0/1.1 containers](#)
+[Java 1.0/1.1 containers](#java-1011-containers)
 
 ## Full container taxonomy ##
 
@@ -116,7 +116,7 @@ Object[] toArray( )|Returns an array containing all the elements in the containe
 
 执行各种不同的添加和移除的方法在Collection接口中都是**可选操作**。这意味着实现类并不需要为这些方法提供功能定义。
 
-**为什么将方法定义为可选的呢？**因为这可防止在设计中出现接口爆炸的情况。
+**为什么将方法定义为可选的呢**？因为这可防止在设计中出现接口爆炸的情况。
 
 容器类库中的其他设计看起来总是为了描述每个主题的各种变体，而最终患上了令人困惑的接口过剩症。
 
@@ -300,7 +300,7 @@ hashCode()和equals()，必须能够完全确定对象的身份
 
 ---
 
-**Jushua Bloch教你怎样写出一份像样的hashCode()给出了基本的指导**
+**Jushua Bloch教你怎样写出一份像样的hashCode()**
 
 - 给**int**变量result赋予某个非零值常量，例如17
 - 为对象内每个有意义的域**f**(即每个可以做equals()操作的域)计算出一个**int**散列码c：
@@ -384,7 +384,7 @@ HashMap and HashSet have constructors that allow you to specify the load factor,
 
 **The default load factor** used by HashMap is **0.75** (it doesn’t rehash until the table is threefourths full). This seems to be a good trade-off between time and space costs. A higher load factor decreases the space required by the table but increases the lookup cost, which is important because lookup is what you do most of the time (including both get( ) and put()). 
 
-## 实用方法 ##
+## Utilities ##
 
 java.util.Collections类内部的静态方法。
 
@@ -496,9 +496,9 @@ Reference派生的子类
 
 [CanonicalMapping](CanonicalMapping.java)
 
-## Java 1.0/1.1的容器 ##
+## Java 1.0/1.1 containers ##
 
-古董容器，了解一下，现在就要再用了。
+古董容器，了解一下，现在就不要再使用它们了。
 
 ### Vector和Enumeration ###
 
