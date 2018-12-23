@@ -174,7 +174,7 @@ SortedSet tailSet(fromElement)|Produces a view of this Set with elements greater
 
 [SortedSetDemo](SortedSetDemo.java)
 
-## Queue ##
+## Queues ##
 
 [QueueBehavior](QueueBehavior.java)
 
@@ -326,7 +326,7 @@ result = 37 * result + c
 
 [IndividualTest](IndividualTest.java)
 
-## 选择接口的不同的实现 ##
+## Choosing an implementation ##
 
 ArrayList底层由数组支持，LinkedList是由双向链表实现。
 
