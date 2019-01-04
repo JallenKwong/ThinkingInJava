@@ -260,9 +260,9 @@ There's also a single lock per class(as part of the Class Object for the class),
 All in all, **Every method that accesses a critical shared resource must be synchronized or it's won't right线程不安全.**
 
 
-**SynchronizedEvenGenerator](share/.java)** synchronized 上面的EvenGenerator，使线程安全
+**[SynchronizedEvenGenerator](share/SynchronizedEvenGenerator.java)** synchronized 上面的EvenGenerator，使线程安全
 
-**MutexEvenGenerator](share/.java)** 通过使用明确的互斥机制Java SE5的java.util.concurrent的**ReentrantLock**/rɪ'entrənt/重入锁实现线程安全
+**[MutexEvenGenerator](share/MutexEvenGenerator.java)** 通过使用明确的互斥机制Java SE5的java.util.concurrent的**ReentrantLock**/rɪ'entrənt/重入锁实现线程安全
 
 
 synchronized 与 Lock 对象的比较
@@ -271,7 +271,7 @@ synchronized 与 Lock 对象的比较
 2. synchronized更简洁
 3. Lock对象提供更细粒度的操作
 
-**AttemptLocking](share/.java)** ReentrantLock的运用示例，tryLock()尝试加锁的方法运用（限时等待锁，超时了就不等）
+**[AttemptLocking](share/AttemptLocking.java)** ReentrantLock的运用示例，tryLock()尝试加锁的方法运用（限时等待锁，超时了就不等）
 
 ## Atomicity and Volatility ##
 
