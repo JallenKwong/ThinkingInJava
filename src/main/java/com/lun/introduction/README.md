@@ -168,5 +168,74 @@ indiscernible from each other.——Gottfried Wilhelm Leibniz [Link](http://www.
 
 ## 伴随多态的可互换对象 ##
 
+泛化generic
 
+>[动] 由具体的、个别的扩大为一般的，比如“先生”也用于称呼女性，战场也用于称呼考场、赛场，就是词义泛化。（《现代汉语词典》第6版，第364页）
+
+---
+
+示例：
+
+For example, in the following diagram the **BirdController** object just works with generic **Bird** objects and **does not know what exact type they are**. This is convenient from **BirdController**’s perspective because it doesn’t have to write special code to determine the exact type of **Bird** it’s working with or that **Bird**’s behavior.
+
+So how does it happen that,when **move**( ) is called while ignoring the specific type of Bird, the right behavior will occur (a **Goose** walks, flies, or swims, and a **Penguin** walks or swims)?
+
+![](image/poly.png)
+
+非面向对象编程的编译器产生的函数调用会引起所谓的**前期绑定**
+
+面向对象编程语言使用了**后期绑定**概念，来实现多态
+
+与C++相比，Java**动态绑定**是默认行为，无需添加额外的关键字来实现多态。
+
+---
+
+We call this process of treating a derived type as though it were its base type **upcasting**. The name **cast** is used in the sense of casting into a mold模型铸造 and the **up** comes from the way the inheritance diagram is typically arranged, with the base type at the top and the derived classes fanning out downward. Thus, casting to a base type is moving up the inheritance diagram: “**upcasting**.”
+
+![](image/upcasting.png)
+
+## 单根继承结构 ##
+
+在Java中，所有类都继承Object
+
+## 容器 ##
+
+**容器这种对象类型持有其他对象的引用**。
+
+List,Set,Map
+
+### 参数化类型 ###
+
+在Java SE5出现之前，容器存储的对象都只具有Java中的通用类型：Object。
+
+
+向上转型是安全的，例如Circle是一种Shape类型；但是不知道某个Object是Circle还是Shape，所以**除非确切知道所要处理的对象的类型，否则向下转型几乎是不安全的**。
+
+Java SE5的重大变化之一就是增加了参数化类型。
+
+[Parameterized types](Upcasting.java)
+
+## 对象的创建和生命周期 ##
+
+Java完全采用了动态内存分配方式（除了基本类型）。
+
+生命周期，对于允许在堆栈上创建对象的语言，编译器可以确定对象存活的时间，并自动销毁它。
+
+然而，若在堆上创建对象，编译器就会对它的生命周期一无所知。
+
+在像C++这样的语言中，必须通过编程方式来确定何时销毁对象，这可能会因不能正确处理而导致内存泄露（C++程序中是常见的问题）。Java提供了被称为“**垃圾回收器**”的机制，它可以自动发现对象何时不再被使用，并继而销毁它。
+
+垃圾回收器非常有用，因为它减少了所必须考虑的议题和必须编写代码。
+
+更重要的是，GC提供更高层的保障，可以避免暗藏的内存泄露问题，这问题已经使许多C++项目折戟沉沙。
+
+## 异常处理 ##
+
+## 并发编程 ##
+
+## Java 和 Internet ##
+
+客户/服务器系统的核心思想：系统具有一个central respository of information，用来存储数据，然后哦根据需要分发给某些人员或机器集群。
+
+## 总结 ## 
 
