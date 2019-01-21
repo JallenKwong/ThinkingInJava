@@ -65,10 +65,16 @@ public class Upcasting {
 		
 		Circle s3 = (Circle)list2.get(0);
 		
-		
 		//总结
 		//? extends Shape 不能 add
 		//? super Shape 可get可强制转换,
+		
+		List<Shape> list3 = new ArrayList<Shape>();
+		
+		list3.add(new Shape());
+		list3.add(new Circle());
+		list3.add(new Square());
+		
 		
 	}
 	
