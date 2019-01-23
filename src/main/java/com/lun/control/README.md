@@ -1,6 +1,6 @@
 # Controlling Execution #
 
-[true和alse](#true和alse)
+[true和false](#true和false)
 
 [if-else](#if-else)
 
@@ -10,7 +10,7 @@
 
 [return](#return)
 
-[break和ontinue](#break和ontinue)
+[break和continue](#break和continue)
 
 [臭名昭著goto](#臭名昭著goto)
 
