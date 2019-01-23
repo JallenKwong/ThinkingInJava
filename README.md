@@ -6,7 +6,7 @@
 
 [3.Operators](src/main/java/com/lun/operator/)
 
-[4.Controlling Execution](/ThinkingInJava/src/main/java/com/lun/control/)
+[4.Controlling Execution](src/main/java/com/lun/control/)
 
 [5.]()
 
