@@ -4,7 +4,7 @@
 
 import re
 
-fileName = 'C:\eclipse-workspace\ThinkingInJava\src\main\java\com\lun\operator\README.md'
+fileName = 'C:\eclipse-workspace\ThinkingInJava\src\main\java\com\lun\control\README.md'
 
 textFile = open(fileName, 'r')
 
