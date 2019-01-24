@@ -1,5 +1,23 @@
 # Initialization & Cleanup #
 
+[用构造器确保初始化](#用构造器确保初始化)
+
+[方法重载](#方法重载)
+
+[默认构造器](#默认构造器)
+
+[this关键字](#this关键字)
+
+[清理：终结处理和垃圾回收](#清理：终结处理和垃圾回收)
+
+[成员初始化](#成员初始化)
+
+[构造器初始化](#构造器初始化)
+
+[数组初始化](#数组初始化)
+
+[枚举类型](#枚举类型)
+
 ## 用构造器确保初始化 ##
 
 [SimpleConstructor](SimpleConstructor.java) 无参构造器来初始化对象
@@ -177,19 +195,112 @@ JavaVM附加技术提升速度
 
 ## 成员初始化 ##
 
+局部变量未初始化就调用，会抛异常
+
+成员字域有缺省值 [更多信息](../object#字段和方法)
+
 [InitialValues](InitialValues.java)
 
 ### 指定初始化 ###
 
+在定义类成员变量的地方为其赋值（C++不能这样做）
 
+[InitialValues2](InitialValues2.java)
+
+[Measurement](Measurement.java)
+
+可通过调用某个方法来提供初值
+
+[MethodInit](MethodInit.java)
+
+[MethodInit2](MethodInit2.java)
+
+[MethodInit3](MethodInit3.java)
 
 ## 构造器初始化 ##
 
+[Counter](Counter.java)
+
+### 初始化顺序 ###
+
+在类的内部，变量定义的先后顺序决定了初始化的顺序。即使变量定义散布于方法定义之间，它们仍旧会在任何方法（包括构造器）被调用**之前**得到初始化。
+
+[OrderOfInitialization](OrderOfInitialization.java)
+
+### 静态数据的初始化 ###
+
+无论创建多少个对象，静态数据都只占用一份存储区域。
+
+static关键字**不能**应用于局部变量，因此它**只能**作用于字域。若一个字域是静态的基本类型域，且也没有对它进行初始化，那么它就会获得基本类型的标准初值；若它是一个对象引用，那么它的默认初始化值就是**null**。
+
+[StaticInitialization](StaticInitialization.java)
+
+初始化的顺序是静态对象（若它们尚未因前面的对象创建过程而被初始化），而后是“非静态”对象。
+
+**总结一下对象的创建过程**，假设有个名为Dog的类：
+
+1. 即使没有显示地使用static关键字，构造器实际上也是静态方法。因此，当首次创建类型为Dog的对象时，或者Dog类的静态方法/静态域首次被访问时，Java解释器必须查找类路径，以定位Dog.class
+2. 然后载入Dog.class，有关**静态初始化**的所有动作都会执行。因此，**静态初始化**只在Class对象首次加载的时候进行一次。
+3. 当用new Dog()创建**对象**的时候，首先将在堆上为Dog对象分配足够的存储空间。
+4. 这块存储空间会被清零，这就自动地将Dog对象中的所有基本类型数据都设置成了默认值，而引用则被设置成了null.
+5. 执行所有出现于字段定义处的初始化动作。
+6. 执行构造器。
+
+### 显示的静态初始化 ###
+
+Java允许将多个静态初始化动作组织成一个特殊的“静态子句”或“静态块”
+
+静态块
+
+[Spoon](Spoon.java)
+
+[ExplicitStatic](ExplicitStatic.java)
+
+### 非静态实例初始化 ###
+
+实例初始化子句与静态块类似
+
+[Mugs](Mugs.java)
+
 ## 数组初始化 ##
+
+[ArraysOfPrimitives](ArraysOfPrimitives.java) 基本类型数组初始化
+
+[ArrayNew](ArrayNew.java)
+
+[ArrayClassObj](ArrayClassObj.java) 对象类型数组初始化，包装类
+
+[ArrayInit](ArrayInit.java) 包装类数组
+
+[DynamicArray](DynamicArray.java) main 变参数组
+
+### 可变参数列表 ###
+
+[VarArgs](VarArgs.java)
+
+[NewVarArgs](NewVarArgs.java)
+
+[OptionalTrailingArguments](OptionalTrailingArguments.java)
+
+[VarargType](VarargType.java)
+
+[AutoboxingVarargs](AutoboxingVarargs.java)
+
+[OverloadingVarargs](OverloadingVarargs.java)
+
+[OverloadingVarargs2](OverloadingVarargs2.java)
+
+[OverloadingVarargs3](OverloadingVarargs3.java)
 
 ## 枚举类型 ##
 
+[Spiciness](Spiciness.java)
 
+[SimpleEnumUse](SimpleEnumUse.java)
 
+[EnumOrder](EnumOrder.java)
 
+[Burrito](Burrito.java) switch使用enum枚举
+
+[更多信息](../enumerated)
 

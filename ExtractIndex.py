@@ -4,7 +4,9 @@
 
 import re
 
-fileName = 'C:\eclipse-workspace\ThinkingInJava\src\main\java\com\lun\control\README.md'
+chapterName = 'initnclean'
+
+fileName = 'C:\eclipse-workspace\ThinkingInJava\src\main\java\com\lun\\'+ chapterName+'\README.md'
 
 textFile = open(fileName, 'r')
 
@@ -16,4 +18,5 @@ for line in textFile.readlines():
         mo = indexRegex.search(line)
 
         # line
-        print '[%s](#%s)\n'%(mo.group(1), mo.group(1).lower())
+        indexName = mo.group(1).decode('utf-8')#decode解码，encode编码
+        print '[%s](#%s)\n'%(indexName, indexName.lower())
